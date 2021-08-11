@@ -1,7 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
+    <PackageId>HOS.NamedPipe</PackageId>
+    <Authors>HOS.NamedPipe</Authors>
+    <Product>HOS.NamedPipe</Product>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +15,13 @@
   <ItemGroup>
     <ProjectReference Include="..\HttpOverStream.Client\HttpOverStream.Client.csproj" />
     <ProjectReference Include="..\HttpOverStream\HttpOverStream.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

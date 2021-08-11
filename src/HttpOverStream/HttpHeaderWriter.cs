@@ -11,12 +11,12 @@ namespace HttpOverStream
 {
     public static class HttpHeaderWriter
     {
-        static byte[] _eol = Encoding.ASCII.GetBytes("\n");
+        static byte[] _eol = Encoding.ASCII.GetBytes("\r\n");
         public static async Task WriteServerResponseStatusAndHeadersAsync(this Stream stream, string protocol,
             string statusCode, string reasonPhrase, IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers,
             Action<string> log, CancellationToken cancellationToken)
         {
-            var statusLine = $"{protocol} {statusCode} {reasonPhrase}\n";
+            var statusLine = $"{protocol} {statusCode} {reasonPhrase}\r\n";
             var statusLineBytes = Encoding.ASCII.GetBytes(statusLine);
             log("Status line:" + statusLine);
             await stream.WriteAsync(statusLineBytes, 0, statusLineBytes.Length, cancellationToken).ConfigureAwait(false);
@@ -32,7 +32,7 @@ namespace HttpOverStream
             {
                 var separator = header.Key == "Server" ? " " : ", ";
                 var values = string.Join(separator, header.Value);
-                var line = $"{header.Key}: {values}\n";
+                var line = $"{header.Key}: {values}\r\n";
                 log(header.Key + " Header:" + line);
                 var payload = Encoding.ASCII.GetBytes(line);
                 await stream.WriteAsync(payload, 0, payload.Length, cancellationToken).ConfigureAwait(false);
@@ -41,7 +41,7 @@ namespace HttpOverStream
 
         public static async Task WriteClientMethodAndHeadersAsync(this Stream stream, HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var firstLine = $"{request.Method.Method} {request.RequestUri.GetComponents(UriComponents.PathAndQuery | UriComponents.Fragment, UriFormat.UriEscaped)} HTTP/{request.Version}\n";
+            var firstLine = $"{request.Method.Method} {request.RequestUri.GetComponents(UriComponents.PathAndQuery | UriComponents.Fragment, UriFormat.UriEscaped)} HTTP/{request.Version}\r\n";
             var payload = Encoding.ASCII.GetBytes(firstLine);
 
             Debug.WriteLine("-- Client: Writing request - first line");
